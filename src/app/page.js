@@ -17,7 +17,7 @@ export default function Home() {
           </Avatar>
         </div>
         <h1 className="text-xl text-white">DIGITAL PARADISE MEDIA</h1>
-        <div className="flex gap-2 py-2 px-2 mt-8">
+        <div className="flex flex-col space-y-12 py-2 px-2 mt-8">
           <div>
             <Button onClick={() => router.push("/Services")}>
               <Image src="/services_button.jpeg" alt="Services" width={200} height={200} />
