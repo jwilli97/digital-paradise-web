@@ -9,9 +9,9 @@ export default function Home() {
   return (
     <div>
       <div className="flex h-screen w-full flex-col items-center px-4 py-6 relative">
-        <div className="flex gap-2 py-2 px-2"> 
+        <div className="flex gap-2 py-2 px-2 mt-16"> 
           <Avatar className="w-24 h-24">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src="/logo.jpg" alt="Digital Paradise Media" />
             <AvatarFallback>DP</AvatarFallback>
           </Avatar>
         </div>
