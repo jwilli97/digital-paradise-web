@@ -1,4 +1,5 @@
 'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -18,19 +19,19 @@ export default function Home() {
         </div>
         <h1 className="text-xl text-white">DIGITAL PARADISE MEDIA</h1>
         <div className="flex flex-col space-y-12 py-2 px-2 mt-8">
-          <div>
+          <div className="p-5">
             <Button onClick={() => router.push("/Services")}>
-              <Image src="/services_button.jpeg" alt="Services" width={200} height={200} />
+              <Image src="/services_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>
-          <div>
+          <div className="p-5">
             <Button onClick={() => router.push("/About")}>
-            <Image src="/about_button.jpeg" alt="Services" width={200} height={200} />
+            <Image src="/about_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>
-          <div>
+          <div className="p-5">
             <Button onClick={() => router.push("/Tickets")}>
-            <Image src="/ticketing_button.jpeg" alt="Services" width={200} height={200} />
+            <Image src="/ticketing_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>
         </div>
