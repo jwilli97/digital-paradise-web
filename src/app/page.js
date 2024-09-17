@@ -11,13 +11,12 @@ export default function Home() {
   return (
     <div>
       <div className="flex h-screen w-full flex-col items-center px-4 py-6 relative">
-        <div className="flex gap-2 py-2 px-2 mt-16"> 
-          <Avatar className="w-24 h-24">
-            <AvatarImage src="/dpm_logo.png" alt="Digital Paradise Media" />
+        <div className="flex gap-2 py-2 px-2 mt-16">
+          <Avatar className="w-36 h-36">
+            <AvatarImage src="/dpm_white_logo.png" alt="Digital Paradise Media" />
             <AvatarFallback>DP</AvatarFallback>
           </Avatar>
         </div>
-        <h1 className="text-xl text-white">DIGITAL PARADISE MEDIA</h1>
         <div className="flex flex-col space-y-12 py-2 px-2 mt-8">
           <div>
             <Button className="bg-transparent" onClick={() => router.push("/Services")}>

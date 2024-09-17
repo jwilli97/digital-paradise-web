@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import RetroNav from '@/components/retroNav';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           minHeight: "100vh",
         }}
       >
+        <RetroNav />
         {children}
       </body>
     </html>

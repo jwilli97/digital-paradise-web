@@ -57,7 +57,7 @@ export default function Component() {
           <div className="aspect-video overflow-hidden rounded-lg">
             <img
               alt="Studio Recording"
-              className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
+              className="object-cover w-full h-full"
               height="400"
               src={showInfo.image}
               style={{
@@ -138,7 +138,7 @@ export default function Component() {
             ))}
             <div className="space-y-2">
               <Label className="text-sm font-medium">Payment Method</Label>
-              <RadioGroup onValueChange={setPaymentMethod} defaultValue='venmo' className="flex flex-col space-y-2">
+              <RadioGroup onValueChange={setPaymentMethod} defaultValue='' className="flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
                   <Label htmlFor="venmo">Venmo</Label>
