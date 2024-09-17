@@ -13,24 +13,24 @@ export default function Home() {
       <div className="flex h-screen w-full flex-col items-center px-4 py-6 relative">
         <div className="flex gap-2 py-2 px-2 mt-16"> 
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/logo.jpg" alt="Digital Paradise Media" />
+            <AvatarImage src="/dpm_logo.png" alt="Digital Paradise Media" />
             <AvatarFallback>DP</AvatarFallback>
           </Avatar>
         </div>
         <h1 className="text-xl text-white">DIGITAL PARADISE MEDIA</h1>
         <div className="flex flex-col space-y-12 py-2 px-2 mt-8">
-          <div className="p-5">
-            <Button onClick={() => router.push("/Services")}>
+          <div>
+            <Button className="bg-transparent" onClick={() => router.push("/Services")}>
               <Image src="/services_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>
-          <div className="p-5">
-            <Button onClick={() => router.push("/About")}>
+          <div>
+            <Button className="bg-transparent" onClick={() => router.push("/About")}>
             <Image src="/about_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>
-          <div className="p-5">
-            <Button onClick={() => router.push("/Tickets")}>
+          <div>
+            <Button className="bg-transparent" onClick={() => router.push("/Tickets")}>
             <Image src="/ticketing_button.jpeg" alt="Services" width={400} height={400} />
             </Button>
           </div>

@@ -12,13 +12,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 // Update for every show
 const showInfo = {
-  title: "Live Studio Recording - June 2023",
-  date: "June 15, 2023",
+  title: "Curevo - October 2024",
+  date: "October 16, 2024",
   time: "7:00 PM",
-  venue: "Studio 54, New York City",
-  image: "/placeholder.svg?height=400&width=600",
+  venue: "Electic Lounge",
+  image: "/Ticketing1.jpg",
   ticketPrice: 20,
-}
+};
 
 export default function Component() {
   const [numTickets, setNumTickets] = useState(1)
@@ -50,7 +50,7 @@ export default function Component() {
         <CardHeader className="bg-primary text-primary-foreground p-6">
           <CardTitle className="text-2xl font-bold">{showInfo.title}</CardTitle>
           <CardDescription className="mt-2">
-            Date: {showInfo.date} | Time: {showInfo.time} | Venue: {showInfo.venue}
+            Date: {showInfo.date} | Doors: {showInfo.time} | Venue: {showInfo.venue}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
