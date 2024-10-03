@@ -14,9 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const showInfo = {
   title: "Curevo - October 2024",
   date: "October 16, 2024",
-  time: "7:00 PM",
-  venue: "Electic Lounge",
-  image: "/Ticketing1.jpg",
+  time: "6:00 PM",
+  image: "/Cuervo_Long.jpg",
   ticketPrice: 20,
 };
 
@@ -55,16 +54,17 @@ export default function Component() {
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <div className="aspect-video overflow-hidden rounded-lg">
-            <img
+            <Image
               alt="Studio Recording"
               className="object-cover w-full h-full"
-              height="400"
+              height="600"
               src={showInfo.image}
               style={{
-                aspectRatio: "600/400",
                 objectFit: "cover",
+                objectPosition: "center",
               }}
-              width="600"
+              width="800"
+              priority
             />
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
