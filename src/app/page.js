@@ -18,7 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Update for every show
 const showInfo = {
   title: "Curevo - October 2024",
-  date: "October 16, 2024",
+  date: "October 18, 2024",
   time: "6:00 PM",
   image: "/Cuervo_Long.jpg",
   ticketPrice: 20,
@@ -208,11 +208,11 @@ export default function Tickets() {
               <RadioGroup onValueChange={setPaymentMethod} value={paymentMethod} className="flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
-                  <Label htmlFor="venmo">Venmo</Label>
+                  <Label htmlFor="venmo">Venmo - <a>@digitalparadisemedia</a></Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="cashapp" id="cashapp" />
-                  <Label htmlFor="cashapp">Cash App</Label>
+                  <Label htmlFor="cashapp">Cash App - <a>$digitalparadisemedia</a></Label>
                 </div>
               </RadioGroup>
             </div>
