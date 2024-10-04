@@ -4,12 +4,14 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from '@/components/ui/checkbox';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -17,7 +19,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Update for every show
 const showInfo = {
-  title: "Curevo - October 2024",
+  title: "Curevo @ Electric Lounge",
   date: "October 18, 2024",
   time: "6:00 PM",
   image: "/Cuervo_Long.jpg",
@@ -33,7 +35,27 @@ export default function Tickets() {
   const [guests, setGuests] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isSubmitting, setIsSubmitting] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errors, setErrors ] = useState('');
   const router = useRouter();
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!firstName) newErrors.firstName = "First name is required";
+    if (!lastName) newErrors.lastName = "Last name is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!paymentMethod) newErrors.paymentMethod = "Payment method is required";
+    if (paymentMethod && !paymentHandle) newErrors.paymentHandle = "Payment handle is required";
+    if (!acceptTerms) newErrors.terms = "Please read and check this box to continue";
+    
+    guests.forEach((guest, index) => {
+      if (!guest.firstName) newErrors[`guest${index}FirstName`] = "Guest first name is required";
+      if (!guest.lastName) newErrors[`guest${index}LastName`] = "Guest last name is required";
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleNumTicketsChange = (value) => {
     const num = parseInt(value, 10)
@@ -49,6 +71,7 @@ export default function Tickets() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setIsSubmitting(true);
 
     try {
@@ -98,7 +121,7 @@ export default function Tickets() {
       router.push('/TicketConfirmation');
     } catch (error) {
       console.error('Unexpected error:', error);
-      // Handle unexpected errors
+      setErrors({ submit: "An unexpected error occurred. Please try again." })
     } finally {
       setIsSubmitting(false);
     }
@@ -108,9 +131,9 @@ export default function Tickets() {
     <div className="container mx-auto px-4 py-8 mt-16 sm:px-6 lg:px-8">
       <Card className="w-full max-w-2xl mx-auto bg-slate-200 text-card-foreground shadow-xl overflow-hidden">
         <CardHeader className="bg-primary text-primary-foreground p-6">
-          <CardTitle className="text-2xl font-bold">{showInfo.title}</CardTitle>
-          <CardDescription className="mt-2">
-            Date: {showInfo.date} | Doors: {showInfo.time} | Venue: {showInfo.venue}
+          <CardTitle className="text-2xl text-center font-bold">{showInfo.title}</CardTitle>
+          <CardDescription className="mt-2 text-center">
+            Date: {showInfo.date} | Doors: {showInfo.time}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
@@ -137,8 +160,9 @@ export default function Tickets() {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required 
-                  className="bg-background border-input text-foreground" 
+                  className={`bg-background border-input text-foreground ${errors.firstName ? 'border-red-500' : ''}`}
                 />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName" className="text-sm font-medium text-foreground">Last Name</Label>
@@ -147,8 +171,9 @@ export default function Tickets() {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required 
-                  className="bg-background border-input text-foreground" 
+                  className={`bg-background border-input text-foreground ${errors.lastName ? 'border-red-500' : ''}`}
                 />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
               </div>
             </div>
             <div>
@@ -158,8 +183,9 @@ export default function Tickets() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required 
-                className="bg-background border-input text-foreground" 
+                className={`bg-background border-input text-foreground ${errors.email ? 'border-red-500' : ''}`}
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="numTickets" className="text-sm font-medium text-foreground">Number of Tickets</Label>
@@ -205,16 +231,29 @@ export default function Tickets() {
             ))}
             <div className="space-y-2">
               <Label className="text-sm font-medium">Payment Method</Label>
-              <RadioGroup onValueChange={setPaymentMethod} value={paymentMethod} className="flex flex-col space-y-2">
+              <RadioGroup 
+                onValueChange={setPaymentMethod} 
+                value={paymentMethod} 
+                className="flex flex-col space-y-2"
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
-                  <Label htmlFor="venmo">Venmo - @digitalparadisemedia</Label>
+                  <Label className='flex items-center' htmlFor="venmo">
+                    Venmo - <span className='text-blue-500 ml-1'>
+                      <Link href={'https://venmo.com/u/digitalparadisemedia'}>@digitalparadisemedia</Link>
+                    </span>
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="cashapp" id="cashapp" />
-                  <Label htmlFor="cashapp">Cash App - $digitalparadisemedia</Label>
+                  <Label className='flex items-center' htmlFor="cashapp">
+                    Cash App - <span className='text-blue-500 ml-1'>
+                      <Link href={'https://cash.app/$digitalparadisemedia'}>$digitalparadisemedia</Link>
+                    </span>
+                  </Label>
                 </div>
               </RadioGroup>
+              {errors.paymentMethod && <p className="text-red-500 text-sm">{errors.paymentMethod}</p>}
             </div>
             {paymentMethod && (
               <div className="space-y-2">
@@ -226,9 +265,31 @@ export default function Tickets() {
                   value={paymentHandle}
                   onChange={(e) => setPaymentHandle(e.target.value)}
                   required 
-                  className="bg-background text-foreground" 
+                  className={`bg-background text-foreground ${errors.paymentHandle ? 'border-red-500' : ''}`}
                 />
+                {errors.paymentHandle && <p className="text-red-500 text-sm">{errors.paymentHandle}</p>}
               </div>
+            )}
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="terms" 
+                checked={acceptTerms}
+                onCheckedChange={setAcceptTerms}
+                className="border-2 border-gray-300 rounded-sm w-4 h-4"
+              />
+              <Label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Please bring your ID to the show!!!
+              </Label>
+            </div>
+            {errors.terms && <p className="text-red-500 text-sm">{errors.terms}</p>}
+            {errors.submit && (
+              <Alert variant="destructive">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{errors.submit}</AlertDescription>
+              </Alert>
             )}
             <Button 
               type="submit" 
