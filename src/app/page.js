@@ -231,7 +231,7 @@ export default function Tickets() {
               </div>
             ))}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Payment Method</Label>
+              <Label className="text-sm font-medium">Payment Method (please select one)</Label>
               <RadioGroup 
                 onValueChange={setPaymentMethod} 
                 value={paymentMethod} 
@@ -240,17 +240,13 @@ export default function Tickets() {
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="venmo" id="venmo" />
                   <Label className='flex items-center' htmlFor="venmo">
-                    Venmo - <span className='text-blue-500 ml-1'>
-                      <Link href={'https://venmo.com/u/digitalparadisemedia'}>@digitalparadisemedia</Link>
-                    </span>
+                    Venmo - <span className='ml-1'>@digitalparadisemedia</span>
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="cashapp" id="cashapp" />
                   <Label className='flex items-center' htmlFor="cashapp">
-                    Cash App - <span className='text-blue-500 ml-1'>
-                      <Link href={'https://cash.app/$digitalparadisemedia'}>$digitalparadisemedia</Link>
-                    </span>
+                    Cash App - <span className='ml-1'>$digitalparadisemedia</span>
                   </Label>
                 </div>
               </RadioGroup>
