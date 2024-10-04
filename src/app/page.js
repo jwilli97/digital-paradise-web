@@ -20,7 +20,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Update for every show
 const showInfo = {
-  title: "Curevo @ Electric Lounge",
+  title: "Cuervo @ Electric Lounge",
   date: "October 18, 2024",
   time: "6:00 PM",
   image: "/Cuervo_Long.jpg",
