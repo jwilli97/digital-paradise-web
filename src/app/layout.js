@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
           minHeight: "100vh",
         }}
       >
-        <RetroNav />
+        {/* <RetroNav /> */}
         {children}
       </body>
     </html>
