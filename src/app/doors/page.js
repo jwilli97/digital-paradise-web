@@ -92,13 +92,37 @@ export default function AttendanceTable() {
     )
   }
 
-  const addAttendee = () => {
+  const addAttendee = async () => {
     if (newAttendeeName.trim() !== "") {
-      setAttendees([
-        ...attendees,
-        { id: attendees.length + 1, name: newAttendeeName.trim(), present: false, notes: "" },
-      ])
-      setNewAttendeeName("")
+      try {
+        // Split the full name into first and last name
+        const [firstName, ...lastNameParts] = newAttendeeName.trim().split(' ');
+        const lastName = lastNameParts.join(' ');
+
+        // Insert the new attendee into the Cuervo table
+        const { data, error } = await supabase
+          .from('Cuervo')
+          .insert({ first_name: firstName, last_name: lastName })
+          .select()
+
+        if (error) throw error;
+
+        // Add the new attendee to the local state
+        const newAttendee = {
+          id: `cuervo_${data[0].id}`,
+          name: newAttendeeName.trim(),
+          present: false,
+          notes: ""
+        };
+
+        setAttendees([...attendees, newAttendee]);
+        setNewAttendeeName("");
+
+        console.log('New attendee added:', newAttendee);
+      } catch (error) {
+        console.error('Error adding new attendee:', error);
+        // Optionally, you can add error handling UI here
+      }
     }
   }
 
