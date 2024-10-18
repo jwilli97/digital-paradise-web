@@ -64,11 +64,11 @@ export default function AttendanceTable() {
       const combinedAttendees = [...cuervoAttendees, ...guestAttendees]
       console.log('Combined attendees:', combinedAttendees)
 
-      // Sort the combined attendees array alphabetically by last name
+      // Sort the combined attendees array alphabetically by first name
       const sortedAttendees = combinedAttendees.sort((a, b) => {
-        const lastNameA = a.name.split(' ').pop();
-        const lastNameB = b.name.split(' ').pop();
-        return lastNameA.localeCompare(lastNameB);
+        const firstNameA = a.name.split(' ')[0];
+        const firstNameB = b.name.split(' ')[0];
+        return firstNameA.localeCompare(firstNameB);
       });
 
       setAttendees(sortedAttendees)
@@ -140,10 +140,12 @@ export default function AttendanceTable() {
           payment_method: "Select..."
         };
 
-        // Insert the new attendee and sort the array
-        const updatedAttendees = [...attendees, newAttendee].sort((a, b) => 
-          a.name.localeCompare(b.name)
-        );
+        // Insert the new attendee and sort the array by first name
+        const updatedAttendees = [...attendees, newAttendee].sort((a, b) => {
+          const firstNameA = a.name.split(' ')[0];
+          const firstNameB = b.name.split(' ')[0];
+          return firstNameA.localeCompare(firstNameB);
+        });
 
         setAttendees(updatedAttendees);
         setNewAttendeeName("");
