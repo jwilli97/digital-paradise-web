@@ -26,10 +26,10 @@ export default function AttendanceTable() {
 
   const fetchAttendees = async () => {
     try {
-      // Fetch Cuervo data (unchanged)
+      // Fetch Cuervo data (updated to include payment_method)
       const { data: cuervoData, error: cuervoError } = await supabase
         .from('Cuervo')
-        .select('id, first_name, last_name, attended, notes, status')
+        .select('id, first_name, last_name, attended, notes, status, payment_method')
 
       if (cuervoError) throw cuervoError
       console.log('Cuervo data:', cuervoData)
@@ -48,7 +48,8 @@ export default function AttendanceTable() {
         name: `${user.first_name} ${user.last_name}`,
         attended: user.attended || false,
         notes: user.notes || "",
-        status: user.status || "GA"
+        status: user.status || "GA",
+        payment_method: user.payment_method || "Select..."
       }))
 
       const guestAttendees = guestsData.map(guest => ({
@@ -56,7 +57,8 @@ export default function AttendanceTable() {
         name: `${guest.first_name} ${guest.last_name}`,
         attended: guest.attended || false,
         notes: guest.notes || "",
-        status: guest.status || "GA"
+        status: guest.status || "GA",
+        payment_method: "Guest" // Guests don't have payment method
       }))
 
       const combinedAttendees = [...cuervoAttendees, ...guestAttendees]
@@ -105,7 +107,10 @@ export default function AttendanceTable() {
         const newAttendeeData = { 
           first_name: firstName, 
           last_name: lastName, 
-          attended: false 
+          attended: true,
+          notes: "",
+          status: "GA",
+          payment_method: "Select..."
         };
 
         console.log('Attempting to insert:', newAttendeeData);
@@ -131,7 +136,8 @@ export default function AttendanceTable() {
           name: newAttendeeName.trim(),
           attended: true,
           notes: "",
-          status: "GA"
+          status: "GA",
+          payment_method: "Select..."
         };
 
         // Insert the new attendee and sort the array
@@ -219,6 +225,26 @@ export default function AttendanceTable() {
     }
   };
 
+  const updatePaymentMethod = async (id, newPaymentMethod) => {
+    const updatedAttendees = attendees.map((attendee) =>
+      attendee.id === id ? { ...attendee, payment_method: newPaymentMethod } : attendee
+    );
+    setAttendees(updatedAttendees);
+
+    const [table, dbId] = id.split('_');
+    
+    if (table === 'cuervo') {
+      try {
+        await supabase
+          .from('Cuervo')
+          .update({ payment_method: newPaymentMethod })
+          .eq('id', dbId);
+      } catch (error) {
+        console.error('Error updating payment method:', error);
+      }
+    }
+  };
+
   const updateAttendees = async () => {
     try {
       const cuervoUpdates = attendees
@@ -229,7 +255,8 @@ export default function AttendanceTable() {
           last_name: attendee.name.split(' ').slice(1).join(' '),
           attended: attendee.attended,
           notes: attendee.notes,
-          status: attendee.status
+          status: attendee.status,
+          payment_method: attendee.payment_method
         }));
 
       const guestUpdates = attendees
@@ -273,6 +300,7 @@ export default function AttendanceTable() {
               status: guest.status,
               first_name: guest.guests[0]?.first_name || '',
               last_name: guest.guests[0]?.last_name || '',
+              payment_method: "Guest"
               // Add more guest fields if needed
             });
           if (guestError) throw guestError;
@@ -303,10 +331,11 @@ export default function AttendanceTable() {
         <Table className="w-full border-collapse border border-gray-300">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/4 text-center border border-gray-300">Name</TableHead>
-              <TableHead className="w-1/8 text-center border border-gray-300">Attended</TableHead>
-              <TableHead className="w-1/8 text-center border border-gray-300">Status</TableHead>
-              <TableHead className="w-1/3 text-center border border-gray-300">Notes</TableHead>
+              <TableHead className="w-1/5 text-center border border-gray-300">Name</TableHead>
+              <TableHead className="w-1/10 text-center border border-gray-300">Attended</TableHead>
+              <TableHead className="w-1/10 text-center border border-gray-300">Status</TableHead>
+              <TableHead className="w-1/10 text-center border border-gray-300">Payment</TableHead>
+              <TableHead className="w-1/4 text-center border border-gray-300">Notes</TableHead>
               <TableHead className="w-1/12 text-center border border-gray-300">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -359,6 +388,26 @@ export default function AttendanceTable() {
                     </Select>
                   </div>
                 </TableCell>
+                <TableCell className="text-center border border-gray-300">
+                  <div className="flex justify-center">
+                    <Select
+                      value={attendee.payment_method}
+                      onValueChange={(value) => updatePaymentMethod(attendee.id, value)}
+                      disabled={attendee.id.startsWith('guest_')}
+                    >
+                      <SelectTrigger className="justify-between">
+                        <SelectValue placeholder="Select payment" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="cashapp">CashApp</SelectItem>
+                        <SelectItem value="venmo">Venmo</SelectItem>
+                        <SelectItem value="vip">VIP</SelectItem>
+                        <SelectItem value="cash">Cash</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </TableCell>
                 <TableCell className="border border-gray-300">
                   <Textarea
                     value={attendee.notes}
@@ -384,4 +433,4 @@ export default function AttendanceTable() {
       </div>
     </div>
   );
-}
+};
